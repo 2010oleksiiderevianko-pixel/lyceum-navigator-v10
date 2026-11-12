@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8"><title>LYCEUM NAVIGATOR · Ліцей ім. А. Волошина</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0a1a3d"><link rel="icon" href="icon.svg" type="image/svg+xml"><script>try{var t=localStorage.getItem('ln:theme');if(!t&&matchMedia('(prefers-color-scheme:dark)').matches)t='dark';if(t)document.documentElement.dataset.theme=t}catch(e){}</script><link rel="stylesheet" href="css/style.css"></head><body>
+<div class="app">
+<aside class="side">
+ <div><div class="school">Ліцей ім. А. Волошина</div><div class="brand"><span class="lg">🧭</span>LYCEUM NAVIGATOR</div></div>
+ <nav class="menu"><button data-v="nav" class="on"><span>🧭</span>Навігатор</button><button data-v="map"><span>🗺️</span>Поверхи та схема</button><button data-v="plan"><span>📅</span>Мій розклад</button><button data-v="qr"><span>🔲</span>QR-коди</button><button data-v="staff"><span>👩‍🏫</span>Вчителі</button><button data-v="info"><span>ℹ️</span>Інформація</button></nav>
+ <div class="tools"><button id="theme" class="aa" aria-pressed="false">🌙 Темна тема</button><button id="aa" class="aa" aria-pressed="false">Aa · Великий текст</button></div>
+</aside>
+<main class="main">
+ <header class="top"><h1>Навігатор ліцею</h1><p>Знайди потрібне приміщення та побудуй маршрут</p></header>
+ <div class="warn" role="note"><b>Демонстраційна схема.</b> Її створено за фото планів евакуації; назви та розташування кабінетів не підтверджені ліцеєм. Застосунок не замінює офіційні плани евакуації.</div>
+ <div class="work nav" id="work">
+  <section class="card" id="routeCard"><h2>Маршрут</h2>
+   <label>Звідки?<input id="qa" list="ls" placeholder="Введіть кабінет або приміщення" autocomplete="off"></label>
+   <button id="swap" class="swap" title="Поміняти місцями" aria-label="Поміняти місцями">⇅</button>
+   <label>Куди?<input id="qb" list="ls" placeholder="Введіть кабінет або приміщення" autocomplete="off"></label>
+   <label>Через (необов’язково)<input id="qv" list="ls" placeholder="Зупинка по дорозі" autocomplete="off"></label>
+   <button id="go" class="go">СТАРТ →</button><button id="walk" class="go" hidden>▶ ІДУ ЗА МАРШРУТОМ</button><button id="clr" class="ghost">Очистити маршрут</button><div class="quick"><button id="nearExit" class="ghost">🚪 Найближчий вихід</button><button id="nearStairs" class="ghost">🪜 Найближчі сходи</button><button id="nearWc" class="ghost">🚻 Найближчий санвузол</button><button id="scanBtn" class="ghost">📷 Сканувати QR</button></div><button id="share" class="ghost" hidden>🔗 Скопіювати посилання на маршрут</button><button id="qrRoute" class="ghost" hidden>📱 QR-код маршруту для телефону</button><button id="copyTxt" class="ghost" hidden>📋 Скопіювати кроки текстом</button><div id="favs" class="recent" hidden></div><div id="recent" class="recent" hidden></div>
+   <div id="rmsg" class="rmsg" role="status"></div><ol id="steps" class="steps"></ol></section>
+  <section class="card" id="mapCard">
+   <div class="mtop"><div class="chips" id="bchips"></div><div class="flab" id="flab"></div></div>
+   <div class="mapwrap"><svg id="svg" role="img" aria-label="Схема поверху"></svg>
+    <div class="side-tools"><div class="fl"><button id="fUp" title="Поверх вище" aria-label="Поверх вище">↑</button><button id="fDown" title="Поверх нижче" aria-label="Поверх нижче">↓</button></div>
+    <div class="fl zm"><button id="zIn" title="Збільшити" aria-label="Збільшити">+</button><button id="zOut" title="Зменшити" aria-label="Зменшити">−</button><button id="zReset" title="Показати весь поверх" aria-label="Показати весь поверх">⤢</button></div></div></div>
+   <div id="rinfo" class="rinfo" hidden></div>
+   <div class="legend"><span><i style="background:#1d4ed8"></i>початок</span><span><i style="background:#16a34a"></i>кінець / вихід</span><span><i style="background:#f59e0b"></i>сходи</span><span>пунктир — не підтверджено</span><span class="hint">Ctrl + коліщатко або кнопки +/− — масштаб, перетягування — переміщення</span></div>
+   <button id="photoBtn" class="ghost photo-btn">📷 Фото плану евакуації цього поверху</button></section>
+  <section class="card" id="planView" hidden><h2>Мій розклад</h2>
+   <p class="mu">Розклад зберігається лише на цьому пристрої. Гоша підкаже, куди йти на наступний урок.</p>
+   <div id="ttNext" class="ttnext" role="status"></div><button id="ttGo" class="go" hidden>МАРШРУТ НА НАСТУПНИЙ УРОК →</button>
+   <div class="ttform"><select id="ttDay" aria-label="День"><option value="0">Щодня</option><option value="1">Пн</option><option value="2">Вт</option><option value="3">Ср</option><option value="4">Чт</option><option value="5">Пт</option></select><input id="ttTime" type="time" aria-label="Час початку"><input id="ttRoom" list="ls" placeholder="Кабінет" autocomplete="off"><button id="ttAdd" class="go">＋</button></div>
+   <div id="ttMsg" class="rmsg err" role="status"></div><div id="ttList"></div></section>
+  <section class="card" id="qrView" hidden><h2>QR-коди маршрутів</h2>
+   <div id="qrForm"><p class="mu">Наклейка зі сканом відкриває навігатор і одразу будує маршрут. Під кодом друкується «Звідки → Куди».</p>
+   <p id="qHint" class="mu"></p><label>Що створити<select id="qMode"><option value="here">📍 «Ви тут» — табличка місця (скан → «куди йти?»)</option><option value="route">🧭 Маршрут «Звідки → Куди»</option><option value="site">🌐 QR самого навігатора</option></select></label>
+   <label>Адреса сайту (куди ведуть коди)<input id="qBase" placeholder="https://ваш-сайт/navigator/" autocomplete="off"></label>
+   <label>Звідки (де висітиме наклейка)<input id="qFrom" list="ls" placeholder="Напр.: Вихід (захід) або кабінет 1-01" autocomplete="off"></label>
+   <label>Куди (порожньо — усі доступні приміщення)<input id="qTo" list="ls" placeholder="Напр.: 2-05" autocomplete="off"></label>
+   <button id="qGo" class="go">СТВОРИТИ QR-КОДИ</button><button id="qScan" class="ghost">📷 Сканер QR</button><button id="qPrint" class="ghost" hidden>🖨 Друк / зберегти як PDF</button><div id="qMsg" class="rmsg" role="status"></div></div>
+   <div id="qOut" class="qrgrid"></div></section>
+  <section class="card" id="staffView" hidden></section>
+  <section class="card" id="infoView" hidden><h2>Інформація</h2>
+   <p>LYCEUM NAVIGATOR — внутрішній навігатор Ліцею ім. А. Волошина. Схеми корпусів А/Б (1–3 поверхи), В, Г, Е (1 поверх) створені за фото планів евакуації. Офіційні евакуаційні маршрути тут не відтворюються.</p>
+   <h2>Що потрібно уточнити</h2><ul id="open"></ul>
+   <h2>Усі приміщення</h2><input id="flt" placeholder="Пошук за номером або назвою"><div id="rooms"></div></section>
+ </div></main></div>
+<datalist id="ls"></datalist>
+<div id="walkBar" role="status" aria-live="polite" hidden><div class="wb-t"><div class="wb-n" id="wN"></div><b id="wT"></b><small id="wS"></small><div class="wb-p"><i id="wP"></i></div></div><div class="wb-b"><button id="wPrev" class="ghost" aria-label="Назад">◀</button><button id="wNext" class="go">Далі ▶</button><button id="wX" class="ghost" aria-label="Завершити">✕</button></div></div>
+<dialog id="qrDlg"><div class="dh"><b>QR-код маршруту</b><button id="qrX" class="ghost" aria-label="Закрити">✕</button></div><div id="qrBox"></div><p id="qrCap"></p></dialog>
+<dialog id="photoDlg"><div class="dh"><b id="photoTtl"></b><button id="photoX" class="ghost" aria-label="Закрити">✕</button></div><div id="photoBox"></div></dialog>
+<dialog id="scanDlg"><div class="dh"><b>Сканер QR</b><button id="scanX" class="ghost" aria-label="Закрити">✕</button></div><video id="scanVid" playsinline muted></video><p id="scanMsg"></p></dialog>
+<script src="js/qr.js"></script><script src="js/data.js"></script><script src="js/engine.js"></script><script src="js/map.js"></script><script src="js/app.js"></script><script src="js/gosha.js"></script><script src="js/brain.js"></script><script src="js/kb.js"></script><script src="js/staff.js"></script><script src="js/plus.js"></script><script src="js/mind.js"></script><script src="js/extra.js"></script>
+</body></html>

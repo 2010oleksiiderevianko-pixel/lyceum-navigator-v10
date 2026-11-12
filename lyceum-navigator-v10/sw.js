@@ -1,0 +1,5 @@
+// Офлайн-кеш навігатора. Змінюйте V після оновлення файлів.
+const V='ln-v15',F=["./", "index.html", "css/style.css", "js/qr.js", "js/data.js", "js/engine.js", "js/map.js", "js/app.js", "js/gosha.js", "js/brain.js", "js/kb.js", "js/staff.js", "js/plus.js", "js/mind.js", "js/extra.js", "icon.svg", "manifest.webmanifest", "photos/v1a.jpg", "photos/ab2.jpg", "photos/v1b.jpg", "photos/g1b.jpg", "photos/ab1.jpg", "photos/g1a.jpg", "photos/ab3.jpg", "photos/e1.jpg"];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(F)).then(()=>self.skipWaiting()))});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{const c=r.clone();caches.open(V).then(x=>x.put(e.request,c)).catch(()=>{});return r}).catch(()=>caches.match(e.request,{ignoreSearch:true}).then(r=>r||caches.match('index.html'))))});
